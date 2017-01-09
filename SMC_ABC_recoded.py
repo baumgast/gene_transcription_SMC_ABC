@@ -900,6 +900,13 @@ def create_new_particles(accepted_particles, n_new, threshold, models=models):
 
 
 def log_normal(x, mu, sigma):
+    '''
+    Calculate the density of a lognormal distribution at a given position with a certain shape factor
+    :param x: float, position where the density should be evaluated
+    :param mu: float, scale factor of the lot normal
+    :param sigma: float, shape factor of the log normal
+    :return:
+    '''
     res = 1. / (x * sigma * sp.sqrt(2 * sp.pi)) * sp.exp(-(sp.log(x) - sp.log(mu)) ** 2 / 2 / sigma ** 2)
     return res
 
@@ -973,6 +980,19 @@ def weigh_particles(old_particles, new_particles):
 
 
 def create_new_particles_below_max_dist(data, mock, selected_particles, max_dist, n_new, alpha, threshold, deltaT=deltaT):
+    '''
+    Main function within the SMC ABC function to find particles that are below the current trheshold
+    :param data: 2d array, experimental data
+    :param mock: 2d array, same size as data, experimental measurements of the background signal
+    :param selected_particles: particles under the current threshold from the previous iteration (best 20% of particles)
+    :param max_dist: float, threshold distance
+    :param n_new: int, number of new particles to create
+    :param alpha: float, scaling factor between RNA and intensity
+    :param threshold: float, between 0 and 1, probability of a move in model space
+    :param deltaT: float, imaging time interval
+    :return: list, 1st: created particles, 2nd corresponding simulations, 3rd: corresponding distances, 4th: sampled
+    parmeter vaues by extrinsic noise, 5th: number of accepted articles, 6th number of created particles
+    '''
     #print 'max dist, threshold', threshold
     n_sim = data.shape[1]
     tf = data.shape[0] * deltaT
@@ -1068,6 +1088,18 @@ def create_new_particles_below_max_dist(data, mock, selected_particles, max_dist
 
 
 def smc_abc(data, mock, start_population, iterations, stop, threshold = 0.6, alpha = alpha, save=[False]):
+    '''
+    Function to run the SMC ABC algorithm on an individual data set.
+    :param data: 2d array, experimental data
+    :param mock: 2d array, same size as data, experimental measurements of the background signal
+    :param start_population:
+    :param iterations:
+    :param stop:
+    :param threshold: float, between 0 and 1, probability of a move in model space
+    :param alpha: float, scaling factor between RNA and intensity
+    :param save: 
+    :return:
+    '''
     #print 'smc, threshold', threshold
     old_particles = start_population[0]
     old_sim = start_population[1]
