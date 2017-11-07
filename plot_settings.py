@@ -3,7 +3,6 @@ import scipy as sp
 import matplotlib
 from matplotlib import gridspec
 import pylab as pl
-import SMC_ABC_recoded as smc
 
 matplotlib.rcParams['axes.labelsize'] = 14
 matplotlib.rcParams['xtick.labelsize'] = 14
@@ -18,7 +17,7 @@ matplotlib.rcParams['axes.grid'] = False
 matplotlib.rcParams['svg.fonttype'] = 'none'
 
 fig_width = 11
-figheight_single = 5
+fig_height_single = 5
 
 colormap_conditions = matplotlib.cm.viridis
 colors_conditions = colormap_conditions(sp.linspace(0, 1, 8))
@@ -46,9 +45,20 @@ def acf_sliding_window(data,windows = win):
         ACF.append(acf)
     return TS,ACF
 
-def calc_histogram(data):
-    bins = np.logspace(0, 5, 50)
-    n = data.shape[0] * data.shape[1]
-    hist = np.histogram(data.reshape(n, ), bins = bins)
-    Hist = np.array(hist[0], dtype = float)
-    return bins[0:len(bins) - 1], Hist / n
+
+def nice_boxplots(bp):
+    for box in bp['boxes']:
+        box.set(color='dimgrey', lw=1)
+        box.set(facecolor=color_bg)
+
+    for whisker in bp['whiskers']:
+        whisker.set(color='dimgrey', linewidth=1, linestyle='solid')
+
+    for cap in bp['caps']:
+        cap.set(color='dimgrey', linewidth=1)
+
+    for median in bp['medians']:
+        median.set(color='dimgrey', linewidth=1)
+
+    for flier in bp['fliers']:
+        flier.set(marker='.', color='none', alpha=0.5)
