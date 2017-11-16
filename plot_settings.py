@@ -141,3 +141,26 @@ def nice_boxplots(bp):
 
     for flier in bp['fliers']:
         flier.set(marker='.', color='none', alpha=0.5)
+
+def extract_posterior(smc_perturbations):
+    perturbations = smc_perturbations[:,0,:]
+    res = {}
+    res['perturbations'] = perturbations[0,:]
+    sigma_km = smc_perturbations[:,1,:]
+    #sigma_km = sigma_km[sigma_km > 0]
+    sigma_tau = smc_perturbations[:,2,:]
+    #sigma_tau = sigma_tau[sigma_tau > 0]
+    sigma_T = smc_perturbations[:,3,:]
+    #sigma_T = sigma_T[sigma_T > 0]
+    burst = smc_perturbations[:,4,:]
+    tau = smc_perturbations[:,5,:]
+    T = smc_perturbations[:,6,:]
+    rna_speed = smc_perturbations[:,7,:]
+    res['km'] = (burst/tau).reshape(burst.shape[0]*burst.shape[1],)
+    res['tau'] = tau.reshape(tau.shape[0]*tau.shape[1],)
+    res['T'] = T.reshape(T.shape[0]*T.shape[1])
+    res['sigma_km'] = sigma_km.reshape(sigma_km.shape[0]*sigma_km.shape[1],)
+    res['sigma_tau'] = sigma_tau
+    res['sigma_T'] = sigma_T
+    res['rna_speed'] = rna_speed.reshape(rna_speed.shape[0]*rna_speed.shape[1],)
+    return res
