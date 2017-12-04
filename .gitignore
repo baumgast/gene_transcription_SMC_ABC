@@ -1,24 +1,7 @@
 
 *.pyc
-Figure 3, individual fits to dose response data.ipynb
-Figure 4, induction.ipynb
-Figure 6, global posteriors and frequency modulation.ipynb
-Figure 7, inhibitors.ipynb
-Figure 7, noise and noise mean relation.ipynb
-Figures Paper.ipynb
-model_fits/.DS_Store
-model_fits/dose_response/.DS_Store
-Paper revision.ipynb
-benchmarking/.DS_Store
-*.xml
 *.xml
 *.iml
 .ipynb_checkpoints/Figure_2-checkpoint.ipynb
 .ipynb_checkpoints/figure_3-checkpoint.ipynb
 .ipynb_checkpoints/figure_4-checkpoint.ipynb
-.ipynb_checkpoints/Figures Paper-checkpoint.ipynb
-.ipynb_checkpoints/SMC ABC fit experimental data-checkpoint.ipynb
-.DS_Store
-.idea/workspace.xml
-.ipynb_checkpoints/README-checkpoint.md
-old_nbs/.ipynb_checkpoints/Figure 4, induction-checkpoint.ipynb
