@@ -144,8 +144,8 @@ def start_particles(n_particles, mean_tau=10, mean_T=70, models=models):
         elif p == 4 or p == 7:
             res[ii, 7] = sp.random.uniform(1, 8)
 
-        n = res[ii, 2]
-        N = res[ii, 3]
+        n = int(res[ii, 2])
+        N = int(res[ii, 3])
         if n == 2:
             res[ii, 11] = sp.random.uniform(0.8, 1.)
         if N == 2:
