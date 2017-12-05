@@ -164,3 +164,59 @@ def extract_posterior(smc_perturbations):
     res['sigma_T'] = sigma_T
     res['rna_speed'] = rna_speed.reshape(rna_speed.shape[0]*rna_speed.shape[1],)
     return res
+
+def boot_corr(data_1, data_2, n_samples):
+    res = np.zeros(n_samples)
+    index = np.arange(0, len(data_1))
+    size = int(len(data_1) * 0.7)
+    for ii in np.arange(0, n_samples):
+        rand_1 = np.random.choice(index, size, replace=False)
+        rand_2 = np.random.choice(index, size, replace=False)
+        res[ii] = sp.corrcoef(data_1[rand_1], data_2[rand_2])[0, 1]
+    return res
+
+def sort_dual_sims(sims):
+    sim_1 = np.zeros(sims[0].shape)
+    sim_2 = np.zeros(sims[1].shape)
+
+    auc_1 = np.trapz(sims[0], dx=3, axis=0)
+    auc_2 = np.trapz(sims[1], dx=3, axis=0)
+
+    for ii in np.arange(0, len(auc_1)):
+        if auc_1[ii] >= auc_2[ii]:
+            sim_1[:, ii] = sims[0][:, ii]
+            sim_2[:, ii] = sims[1][:, ii]
+        else:
+            sim_1[:, ii] = sims[1][:, ii]
+            sim_2[:, ii] = sims[0][:, ii]
+    return sim_1, sim_2
+
+
+def dual_allele_matrix(data):
+    int_data = np.trapz(data[0], dx=3, axis=0)
+    ind_sort_data = np.argsort(int_data)
+
+    mat_data = np.zeros((data[0].shape[1] * 3, data[0].shape[0]))
+
+    index = np.arange(0, data[0].shape[1])
+    for ii in index:
+        mat_data[ii * 3, :] = data[0][:, ind_sort_data[ii]]
+        mat_data[ii * 3 + 1, :] = data[1][:, ind_sort_data[ii]]
+    return mat_data
+
+def bootstrap_corr(data, n_samples):
+    res_pair = np.zeros(n_samples)
+    res_rand = np.zeros(n_samples)
+    n_cells = int(data[0].shape[1] * 0.5)
+    index = np.arange(0, data[0].shape[1])
+
+    for ii in np.arange(0, n_samples):
+        rand_1 = np.random.choice(index, n_cells, replace=False)
+        auc_1 = np.trapz(data[0][:, rand_1], axis=0)
+        auc_2 = np.trapz(data[1][:, rand_1], axis=0)
+        res_pair[ii] = sp.corrcoef(auc_1, auc_2)[0, 1]
+
+        rand_2 = np.random.choice(index, n_cells, replace=False)
+        auc_2 = np.trapz(data[1][:, rand_2], axis=0)
+        res_rand[ii] = sp.corrcoef(auc_1, auc_2)[0, 1]
+    return res_pair, res_rand
