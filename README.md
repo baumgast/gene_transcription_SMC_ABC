@@ -16,3 +16,7 @@ Stochastic simulations can be computationally very intensive depending on the pa
 - Matplotlib
 
 Installing and updating the [Anaconda Python distribution](https://www.continuum.io/) should provide all requirements. It might be necessary to manually install ipyparellel via `conda install`.
+
+## Visualisations
+
+Jupyter notebooks include plots and corresponding code to create those plots. Necessary data is included in the respective folders **experimental_data** and **simulations**.
